@@ -1,15 +1,22 @@
-import { Text, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Link } from 'expo-router';
 
-export const ExerciseListItem = ({item, index}) => (
-  <View style={styles.exerciseContainer}>
-    <Text style={styles.exerciseName}>
-      {index + 1}.{item.name}
-    </Text>
-    <Text style={styles.exerciseSubtitle}>
-      <Text style={styles.subValue}>{item.muscle}</Text> | <Text style={styles.subValue}>{item.equipment}</Text>
-    </Text>        
-  </View>
-);
+export const ExerciseListItem = ({ item, index }) => {
+  return (
+    <Link href={`/${item.name}`} asChild>
+      <Pressable style={styles.exerciseContainer}>
+        <Text style={styles.exerciseName}>{item.name}</Text>
+        <Text style={styles.exerciseSubtitle}>
+          <Text style={styles.subValue}>{item.muscle}</Text>
+          <Text style={styles.subValue}>{item.equipment}</Text>
+        </Text>
+      </Pressable>
+    </Link>
+  );
+};
+
+
 
 const styles = StyleSheet.create({
   exerciseContainer: {
