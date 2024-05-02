@@ -8,6 +8,8 @@ node_modules/
 dist/
 web-build/
 
+text
+
 # Native
 *.orig.*
 *.jks
@@ -15,6 +17,9 @@ web-build/
 *.p12
 *.key
 *.mobileprovision
+
+
+api/ 
 
 # Metro
 .metro-health-check*
@@ -27,6 +32,7 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+
 
 .env 
 # local env files

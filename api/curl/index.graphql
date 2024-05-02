@@ -1,5 +1,10 @@
-schema 
+schema
   @sdl(
-    files: ["curl/index.graphql"]) {
+    files: [
+      "curl/index.graphql"
+      "curl-01/index.graphql"
+      "curl-02/index.graphql"
+    ]
+  ) {
   query: Query
 }
