@@ -3,6 +3,8 @@ import { View, Text, ActivityIndicator, FlatList } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import graphqlClient from '../graphqlClient'
 import { useAuth } from "../providers/AuthContext";
+import SetListItem from "./SetListItem";
+import ProgressGraph from "./ProgressGraph";
 
 
 const setsQuery = gql`
@@ -32,29 +34,16 @@ const SetsList = ({ ListHeaderComponent, exerciseName }) => {
     return (
         <FlatList
             data={data.sets.documents}
-            ListHeaderComponent={ListHeaderComponent}
+            ListHeaderComponent={() => (<>
+                <ListHeaderComponent />
+                <ProgressGraph sets={data.sets.documents} />
+            </>)}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item._id} // Ensure each item has a unique key
-            renderItem={({ item }) => (
-                <SetItem reps={item.reps} weight={item.weight} />
-            )}
+            renderItem={({ item }) => <SetListItem set={item} />}
         />
     );
 };
-
-const SetItem = ({ reps, weight }) => (
-    <Text
-        style={{
-            backgroundColor: 'white',
-            marginVertical: 5,
-            padding: 10,
-            borderRadius: 5,
-            overflow: 'hidden',
-        }}
-    >
-        {reps} x {weight}{' '}
-    </Text>
-);
 
 export default SetsList;
 

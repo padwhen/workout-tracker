@@ -69,9 +69,11 @@ export default function ExercisesScreen() {
       <FlatList 
         data={exercises}
         keyExtractor={(item, index) => item.name + index}
+        style={{ padding: 10 }}
         renderItem={({item}) => <ExerciseListItem item={item} />}
         onEndReachedThreshold={1}
         onEndReached={loadMore}
+        contentInsetAdjustmentBehavior='automatic'
       />
       <StatusBar style="auto" />
     </View>
@@ -82,8 +84,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 10,
-    paddingTop: 160
   }
 })
 
