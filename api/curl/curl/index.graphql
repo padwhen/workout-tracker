@@ -6,7 +6,7 @@ type RootEntry {
 }
 
 type Query {
-  myQuery(name: String): [RootEntry]
+  myQuery(name: String, offset: Int): [RootEntry]
     @rest(
       endpoint: "https://api.api-ninjas.com/v1/exercises"
       headers: [
