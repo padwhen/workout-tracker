@@ -6,10 +6,13 @@ import { gql } from 'graphql-request'
 import client from '../graphqlClient'
 import { Redirect } from 'expo-router';
 import { useAuth } from '../providers/AuthContext';
+import { Stack } from 'expo-router';
+import { useState } from 'react';
+import { useDebounce } from '@uidotdev/usehooks';
 
 const exercisesQuery = gql`
-  query myQuery($offset: Int){
-    myQuery(offset: $offset) {
+  query myQuery($name: String, $offset: Int){
+    myQuery(name: $name, offset: $offset) {
       muscle
       name
       equipment
@@ -17,13 +20,17 @@ const exercisesQuery = gql`
 }`
 
 export default function ExercisesScreen() {
+  const [search, setSearch] = useState('');
+  const debouncedSearchTerm = useDebounce(search.trim(), 1000)
+
   const { data, isLoading, error, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['exercises'],
+    queryKey: ['exercises', debouncedSearchTerm],
     queryFn: ({ pageParam }) => {
-      return client.request(exercisesQuery, { offset: pageParam })
+      return client.request(exercisesQuery, { offset: pageParam, name: debouncedSearchTerm })
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => pages.length * 10,
+
   })
 
   const { username } = useAuth()
@@ -52,6 +59,13 @@ export default function ExercisesScreen() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ 
+        headerSearchBarOptions: {
+          placeholder: 'Search...',
+          onChangeText: (event) => setSearch(event.nativeEvent.text),
+          hideWhenScrolling: false,
+        }
+      }} />
       <FlatList 
         data={exercises}
         keyExtractor={(item, index) => item.name + index}
@@ -69,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 10,
+    paddingTop: 160
   }
 })
 
